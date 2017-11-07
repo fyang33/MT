@@ -103,11 +103,11 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-test*
-*.ipynb
-*.aux
-*.out
-*.pdf
-*.gz
+**/test*
+**/*.ipynb
+**/*.aux
+**/*.out
+**/*.pdf
+**/*.gz
 **/data
 
