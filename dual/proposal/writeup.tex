@@ -68,10 +68,12 @@
 \noindent {\large {\bf 600.468 Machine Tranlation} \hfill {{\bf Fall 2017}}}\\
 {{\bf Project Proposal}} \hfill {{\bf Name:} Yu Zhao, Fan Yang, Zikun Chen} \\
 \part{Problem and Background}
-While neural machine translation (NMT) is making good progress in recent years, parallel corpuses with millions of sentence pairs of target and source language are urgently needed for training process. However, bilingual data needs tons of effort to generate and this process is very costly. Meanwhile, monolingual data is much more plentiful so we wonder whether there is some way to use mainly monolingual data with limited bilingual data to achieve comparable performance to traditional NMT with only parallel corpus.
+While neural machine translation (NMT) is making good progress in recent years, parallel corpuses with millions of sentence pairs of target and source language are urgently needed for training process. However, bilingual data needs tons of human effort to generate and this process is very costly. Meanwhile, monolingual data is much more plentiful so we wonder whether there is some way to use mainly monolingual data with limited bilingual data to achieve comparable performance to traditional NMT with only parallel corpus.
 
-{\color{red}{I think here maybe we should talk about the dual learning paper we see.}}
-\part{Outline}
+
+We get our inspiration from one article we read during preliminary literature review, in this article they introduced a dual learning mechanism which helps NMT systems to automatically learn from unlabeled data in a dual learning game. Besides this dual learning mechanism they proposed, they also reported a very interesting observation: every machine translation task has a dual task, which is very useful in terms of providing feedbacks on how good a language model is. 
+\\
+\indent We borrowed the idea of "dual learning" and came up with a more specific topic: to investigate language model improvements using only monolingual corpus. We still need some aligned bilingual sentences to build the base models for primal task (French -> English) and dual task (English -> French), but in the subsequent reconstruction closed loop based on dual learning and interactive feedbacks, we can use only monolingual data. And it is our main interest to see how much monolingual corpus can contribute to the accuracy improvements, and we are also interested in how complete our experimental reimplementation of this "dual learning" idea can be, given that the research we based our project on doesn't provide any source code.
 In encoder-decoder architecture for NMT, we find that actually it could be trained in both direction with parallel sentence pairs, e.g., English to French and French to English. So, it would form a closed loop and two translation models might have a chance to improve themselves given another's output.
 
 To be more specific, let's consider following scenario:
@@ -79,7 +81,8 @@ To be more specific, let's consider following scenario:
 \item The first agent A, who only has a language model of F and a translation model from F to E, receives a sentence in F, translates it to E and forward translated sentence to the second agent.
 
 \item The second agent B, who only has a language model of E and a translation model from E to F, receives the translated sentence in E. Then B checks and notifies the first agent whether it is a natural sentence in E using language model of E. Next, B translates it back to F and forward it to A.
-\item Now A checks and notifies B whether the message A receives is consistent with the original. Through the feedback, both A and B will know the performance of their translation model well and can improve them accordingly.
+
+\item Now A checks and notifies B whether the message A receives is consistent with the original. Through the feedback, both A and B will know the performance of their translation model well and can improve them accordingly.
 
 \item This process can be iterated for many rounds until both translation models converge or other criteria like maximum iterations.
 \end{enumerate}
